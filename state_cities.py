@@ -21,6 +21,8 @@ def clear_original_dataset():
 
 # create 50 sub folders for each state
 def create_50states_folders():
+    
+    # 50_STATES_USA.txt is a text file containing the names of the 50 US states line by line and can be found everywhere 
     f = open('50_STATES_USA.txt', 'r')
     states = f.readlines()
     

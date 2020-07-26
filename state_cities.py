@@ -2,11 +2,15 @@ import pandas as pd
 import re
 import os
 
+# cities.csv contains the 1000 largest US cities by population with geographic coordinates and can be found here
+# https://public.opendatasoft.com/explore/dataset/1000-largest-us-cities-by-population-with-geographic-coordinates/table/?sort=-rank
+
 cities_initial_dataset = 'cities.csv'
 state_cities_dataset = 'state_cities/'
 
+# remove some unnecessary columns from the initial dataset
 def clear_original_dataset():
-    # remove some unnecessary columns from the initial dataset
+    
     df = pd.read_csv(cities_initial_dataset, usecols=[0,2,4,5], delimiter=';')
 
     # df.columns = df.columns.str.strip()
@@ -15,7 +19,7 @@ def clear_original_dataset():
 
 # clear_original_dataset()
 
-
+# create 50 sub folders for each state
 def create_50states_folders():
     f = open('50_STATES_USA.txt', 'r')
     states = f.readlines()
@@ -40,7 +44,7 @@ def create_50states_folders():
 
 # create_50states_folders()
 
-
+# assign the 1000 cities to the state folder that they belong
 def city_assign_state():
 
     df = pd.read_csv(cities_initial_dataset)

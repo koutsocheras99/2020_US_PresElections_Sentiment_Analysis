@@ -40,14 +40,17 @@ def create_50states_folders():
 
         # creating sub folders and sub csv files with file_name = state
         if not os.path.exists(state_cities_dataset+state):
-           os.mkdir(state_cities_dataset+state)
-           with open(state_cities_dataset+state+'/'+state+'.csv', 'w'):
-              pass
+            os.mkdir(state_cities_dataset+state)
+            with open(state_cities_dataset+state+'/'+state+'.csv', 'w'):
+                pass
+            with open(state_cities_dataset+state+'/tweets.csv', 'w'):
+                pass
 
-# create_50states_folders()
 
 # assign the 1000 cities to the state folder that they belong
 def city_assign_state():
+
+    create_50states_folders()
 
     df = pd.read_csv(cities_initial_dataset)
 
@@ -65,4 +68,3 @@ def city_assign_state():
         
 
 # city_assign_state()
-

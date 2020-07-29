@@ -43,7 +43,9 @@ def create_50states_folders():
             os.mkdir(state_cities_dataset+state)
             with open(state_cities_dataset+state+'/'+state+'.csv', 'w'):
                 pass
-            with open(state_cities_dataset+state+'/tweets.csv', 'w'):
+            with open(state_cities_dataset+state+'/trump_republicans_tweets.csv', 'w'):
+                pass
+            with open(state_cities_dataset+state+'/biden_democrats_tweets.csv', 'w'):
                 pass
 
 

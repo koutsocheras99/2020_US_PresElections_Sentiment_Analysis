@@ -1,6 +1,8 @@
 import tweepy
+from tweepy import TweepError
 import pandas as pd
 import os
+import time
 
 state_cities_dataset = 'state_cities/'
 
@@ -22,6 +24,7 @@ def search_tweets(tweets_number, coordinates):
     get_tweets = tweepy.Cursor(api.search,
                             q=search_keyword, 
                             lang='en', 
+                            count=100,
                             result_type='recent',
                             geocode=coordinates).items(tweets_number)
 
@@ -34,6 +37,8 @@ def search_tweets(tweets_number, coordinates):
     
 
 def iterate_states():
+
+    total_number_of_tweets = 0
 
     states = [f for f in os.listdir('state_cities')]
 
@@ -60,18 +65,29 @@ def iterate_states():
             # print(str(radius)+ ' ' + row[0]+' '+state)
             
             # number of tweets per city is correlated with pop/cities_dense but the city pop is more important
-            # .0f int
-            number_of_tweets = f'{((population_factor)*15 + (cities_per_state_factor)*5):.0f}'
-            
-            tweets = search_tweets(tweets_number=int(number_of_tweets), coordinates=f'{row[2]},{row[3]},{radius}km')
-            
-            # utf-8 encoding to suuport(?) emoticons 
-            with open(state_cities_dataset+'/'+state+'/tweets.csv', 'a', errors='ignore') as f:
-               f.write(str(tweets))
-            
-        
+            number_of_tweets = int((population_factor)*30 + (cities_per_state_factor)*15)
+            '''
+            try:
+
+                tweets = search_tweets(tweets_number=int(number_of_tweets), coordinates=f'{row[2]},{row[3]},{radius}km')
+                
+                # utf-8 encoding to suuport(?) emoticons .. else replace encoding parameter with errors='ignore'
+                with open(state_cities_dataset+state+'/trump_republicans_tweets.csv', 'a', encoding='utf-8') as f:
+                    f.write(str(tweets))
+
+
+            # the reason for the try/except is the explicit close of the connection from the host(twitter) due to the long program duration
+            # http://docs.tweepy.org/en/latest/api.html#tweepy-error-exceptions
+            except TweepError as e:
+                print(e)
+                time.sleep(900)
+                continue
+            '''
+            total_number_of_tweets+=number_of_tweets
+
         print(f'Finished writing with state: {state}!')
+
+    print(total_number_of_tweets)
 
         
 iterate_states() 
-

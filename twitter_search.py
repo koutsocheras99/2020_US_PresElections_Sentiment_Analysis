@@ -27,7 +27,7 @@ def search_tweets(tweets_number, coordinates):
 
     tweets_list = [tweet.text for tweet in get_tweets]
 
-    # add newline after each element list for future operations -> writing the tweets in the csv files 
+    # add newline after each element list for future operations ..  writing the tweets in the csv files 
     newline_tweets_list = '\n'.join(tweets_list)
         
     return newline_tweets_list
@@ -51,13 +51,27 @@ def iterate_states():
             # population column
             # print(row[1])
             
-            tweets = search_tweets(tweets_number=10, coordinates=f'{row[2]},{row[3]},20km')
+            population_factor = min(20, row[1]*5e-5)
+            cities_per_state_factor = max(7, 40/number_of_cities_per_state)
 
+            # radius of search will depend on how much cities dense is the state and the population of each cities 
+            # .2f for only 2 decimal numbers
+            radius = f'{(population_factor + cities_per_state_factor):.2f}'
+            # print(str(radius)+ ' ' + row[0]+' '+state)
+            
+            # number of tweets per city is correlated with pop/cities_dense but the city pop is more important
+            # .0f int
+            number_of_tweets = f'{((population_factor)*15 + (cities_per_state_factor)*5):.0f}'
+            
+            tweets = search_tweets(tweets_number=int(number_of_tweets), coordinates=f'{row[2]},{row[3]},{radius}km')
+            
             # utf-8 encoding to suuport(?) emoticons 
-            # with open(state_cities_dataset+'/'+state+'/tweets.csv', 'a', encoding='utf-8') as f:
-            #    f.write(str(tweets))
+            with open(state_cities_dataset+'/'+state+'/tweets.csv', 'a', errors='ignore') as f:
+               f.write(str(tweets))
+            
         
-        # find an equation for the radius based on city population and cities in the state
+        print(f'Finished writing with state: {state}!')
 
-# iterate_states() 
+        
+iterate_states() 
 

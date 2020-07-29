@@ -8,7 +8,7 @@ import os
 cities_initial_dataset = 'cities.csv'
 state_cities_dataset = 'state_cities/'
 
-# remove some unnecessary columns from the initial dataset
+# remove some unnecessary columns from the initial downloaded dataset
 def clear_original_dataset():
     
     df = pd.read_csv(cities_initial_dataset, usecols=[0,2,4,5], delimiter=';')

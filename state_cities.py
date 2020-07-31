@@ -9,6 +9,7 @@ cities_initial_dataset = 'cities.csv'
 state_cities_dataset = 'state_cities/'
 
 # remove some unnecessary columns from the initial downloaded dataset
+# to be ran only the first time after downloading the above mentioned dataset 
 def clear_original_dataset():
     
     df = pd.read_csv(cities_initial_dataset, usecols=[0,2,4,5], delimiter=';')
@@ -69,4 +70,4 @@ def city_assign_state():
             f.write(city['City'] + ',' + str(city['Population'])+ ',' + city['Coordinates']+'\n')
         
 
-# city_assign_state()
+city_assign_state()

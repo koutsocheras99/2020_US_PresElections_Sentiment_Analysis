@@ -3,6 +3,7 @@ from tweepy import TweepError
 import pandas as pd
 import os
 import time
+import re
 
 state_cities_dataset = 'state_cities/'
 
@@ -18,6 +19,16 @@ no_retweets = '-filter:retweets'
 # check for format = list (example [trump,biden,republican,democrats]) and iterate(?) or simultaneously all values
 search_keyword = 'trump' + no_retweets
 
+# removing @(mentions) and links + transposing multiline tweets to one-line + removing whitespace left&right
+def pre_filter(string):
+
+    clear_mentions_links = re.sub('@\S*|http\S+', '', string)
+
+    final_clear = re.sub('\n', ' ', clear_mentions_links).strip()
+
+    return final_clear
+
+
 def search_tweets(tweets_number, coordinates):
 
     # http://docs.tweepy.org/en/v3.9.0/api.html#help-methods
@@ -25,10 +36,11 @@ def search_tweets(tweets_number, coordinates):
                             q=search_keyword, 
                             lang='en', 
                             count=100,
+                            tweet_mode='extended',
                             result_type='recent',
                             geocode=coordinates).items(tweets_number)
 
-    tweets_list = [tweet.text for tweet in get_tweets]
+    tweets_list = [pre_filter(tweet.full_text) for tweet in get_tweets]
 
     # add newline after each element list for future operations ..  writing the tweets in the csv files 
     newline_tweets_list = '\n'.join(tweets_list)
@@ -66,7 +78,7 @@ def iterate_states():
             
             # number of tweets per city is correlated with pop/cities_dense but the city pop is more important
             number_of_tweets = int((population_factor)*30 + (cities_per_state_factor)*15)
-            '''
+        
             try:
 
                 tweets = search_tweets(tweets_number=int(number_of_tweets), coordinates=f'{row[2]},{row[3]},{radius}km')
@@ -82,12 +94,12 @@ def iterate_states():
                 print(e)
                 time.sleep(900)
                 continue
-            '''
+            
             total_number_of_tweets+=number_of_tweets
 
         print(f'Finished writing with state: {state}!')
-
+        
     print(total_number_of_tweets)
 
-        
-iterate_states() 
+    
+# iterate_states() 

@@ -84,7 +84,7 @@ def iterate_states():
                 tweets = search_tweets(tweets_number=int(number_of_tweets), coordinates=f'{row[2]},{row[3]},{radius}km')
                 
                 # utf-8 encoding to suuport(?) emoticons .. else replace encoding parameter with errors='ignore'
-                with open(state_cities_dataset+state+'/biden_democrats_tweets.csv', 'a', encoding='utf-8') as f:
+                with open(state_cities_dataset+state+'/biden_tweets.csv', 'a', encoding='utf-8') as f:
                     f.write(str(tweets))
 
 
@@ -102,4 +102,4 @@ def iterate_states():
     print(total_number_of_tweets)
 
     
-# iterate_states() 
+iterate_states() 

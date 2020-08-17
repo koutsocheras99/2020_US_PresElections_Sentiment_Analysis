@@ -56,6 +56,9 @@ def iterate_states():
 
     for state in states:
 
+        with open(state_cities_dataset+state+'/trump_tweets.csv', 'a', encoding='utf-8') as f:
+            f.write('\n')
+
         # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html check the purpose of header=None
         cities_csv_file = pd.read_csv(state_cities_dataset+state+'/'+state+'.csv', header=None)
 
@@ -84,10 +87,9 @@ def iterate_states():
                 tweets = search_tweets(tweets_number=int(number_of_tweets), coordinates=f'{row[2]},{row[3]},{radius}km')
                 
                 # utf-8 encoding to suuport(?) emoticons .. else replace encoding parameter with errors='ignore'
-                with open(state_cities_dataset+state+'/biden_tweets.csv', 'a', encoding='utf-8') as f:
+                with open(state_cities_dataset+state+'/trump_tweets.csv', 'a', encoding='utf-8') as f:
                     f.write(str(tweets))
-
-
+                
             # the reason for the try/except is the explicit close of the connection from the host(twitter) due to the long program duration
             # http://docs.tweepy.org/en/latest/api.html#tweepy-error-exceptions
             except TweepError as e:

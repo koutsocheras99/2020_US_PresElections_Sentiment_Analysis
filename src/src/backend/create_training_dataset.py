@@ -35,6 +35,8 @@ for state in states:
     with open(state_cities_dataset+state+'/trump_tweets.csv', 'r', encoding='utf-8') as f1,\
         open('training_dataset.csv', 'a', encoding='utf-8') as f2:
         
+        f2.write('tweet,polarity\n')
+
         tweets = f1.readlines()
 
         for tweet in tweets:
@@ -59,5 +61,3 @@ for state in states:
                 i+=1
 
                 f2.write(no_hashtags_tweet+', '+str(label)+'\n')
-
-print(i)
